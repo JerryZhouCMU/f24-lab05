@@ -1,9 +1,8 @@
 package drawing;
 
-import drawing.shapes.Line;
 import drawing.shapes.Shape;
-import drawing.writing.JPEGWriter;
-import drawing.writing.PNGWriter;
+import drawing.writing.ImageFormatWriter;
+import drawing.writing.ImageFormatWriterFactory;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -30,25 +29,14 @@ public class Drawing {
      */
     public void draw(String format, String filename) {
         // TODO: Do you notice any issues here?
-        if (format.equals("jpeg")) {
-            try (Writer writer = new JPEGWriter(filename + ".jpeg")) {
-                for (Shape shape : this.shapes) {
-                    // TODO: What is the issue of the behavior here?
-                    Line[] lines = shape.toLines();
-                    shape.draw(writer, lines);
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
+        try (Writer writer = new java.io.FileWriter(filename + "." + format)) {
+            ImageFormatWriter formatWriter = ImageFormatWriterFactory.createWriter(format, filename);
+            for (Shape shape : this.shapes) {
+                // TODO: What is the issue of the behavior here?
+                shape.draw(writer, formatWriter); 
             }
-        } else if (format.equals("png")) {
-            try (Writer writer = new PNGWriter(filename + ".png")) {
-                for (Shape shape : this.shapes) {
-                    Line[] lines = shape.toLines();
-                    shape.draw(writer, lines);
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

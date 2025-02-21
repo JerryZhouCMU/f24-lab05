@@ -33,7 +33,7 @@ public class Drawing {
             ImageFormatWriter formatWriter = ImageFormatWriterFactory.createWriter(format, filename);
             for (Shape shape : this.shapes) {
                 // TODO: What is the issue of the behavior here?
-                shape.draw(writer, formatWriter); 
+                shape.draw(writer, formatWriter);
             }
         } catch (IOException e) {
             e.printStackTrace();
